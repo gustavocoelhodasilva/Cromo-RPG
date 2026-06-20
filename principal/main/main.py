@@ -1,6 +1,7 @@
 import core
-core.criarpersonagem("pedro")
-core.inicial()
-core.atributos()
-core.combate()
 
+core.atributos()
+core.criarpersonagem("Matador de onça")
+core.mostraratributos()
+core.cidade()
+core.combate()

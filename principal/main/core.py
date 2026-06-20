@@ -10,6 +10,13 @@ cenarios = [
 
 personagem = {}
 
+def estatistica(kills=0,deaths=0):
+    derrotados = kills
+    morto = deaths
+    print(f"VOÇÊ MORREU {derrotados} VEZES")
+    print(f"VOCÊ MATOU {morto} INIMIGOS")
+
+
 
 def cabeçalho(txt, sinal="==="):
     l1 = sinal * len(txt)
@@ -43,7 +50,7 @@ def criarpersonagem(txt):
 
 
 
-def atributos(vida=100, defesa=20, ataque=10, cura=5, xp=10, nivel=1):
+def atributos(vida=100, defesa=4, ataque=20, cura=5, xp=10, nivel=1):
     personagem["vida"] = vida
     personagem["defesa"] = defesa
     personagem["ataque"] = ataque
@@ -60,24 +67,22 @@ def mostraratributos():
         sleep(0.3)
     linha("=")
 
-def verificarnumero(num=0):
-    nu = num
+def verificarnumero(prompt=">>>>"):
     while True:
         try:
-            n = int(input(nu))
-            ok = True
+            n = int(input(prompt))
+            return n
         except:
             print("Digite apenas numeros")
-            ok = False
-        else:
-            if ok:
-                return n 
+        
 
 
 def arrumarlista():
     for lista in cenarios:
         if "Sair" not in lista:
-            lista.insert(len(lista), "Sair")
+            lista.append("Sair")
+        else:
+            lista.remove("Sair")
     
 
 
@@ -86,7 +91,7 @@ def mostraropcoes():
         for c, op in enumerate(lista):
             print(f"{c:.<10} {op}")
      
-def escolha():
+def escolhe():
    mostraropcoes()
    opcao  =  verificarnumero(">>>>>")
    return opcao
@@ -97,7 +102,7 @@ def escolha():
 def inicial():
     arrumarlista()
     while True:
-        opcao = escolha()
+        opcao = escolhe()
         if opcao == 0: 
             sleep(1)
             print("VOCÊ VE UM MUNDO INCRIVEL E NÃO ACREDITA EM SEUS OLHOS O MUNDO MUDOU TANTO")    
@@ -154,7 +159,7 @@ def cidade():
 def dicstatus(
     ataque=20,
     vida=75,
-    defesa=15,
+    defesa=5,
     cura=3,
     segundaforma=False,
     furia=False,
@@ -201,42 +206,129 @@ walkercomum = dicstatus()
 walkerboss = dicstatus(segundaforma=True, furia=True)
 walkermedico = dicstatus(fatordecura=True)
 
+def calcular_ataque(atacante,defensor):
+    dano = atacante["ataque"] - defensor["defesa"]
+    if dano < 1:
+        dano = 1
+    defensor["vida"] -= dano    
+    return dano 
+def executar_cura(quem_cura,vida=100):
+    if quem_cura["vida"] < vida:
+        quem_cura["vida"] += quem_cura["cura"]
+    else:
+        quem_cura["vida"] = vida
+    return quem_cura["cura"]
+
+def verifica_morte(entidade):
+    if entidade["vida"] <= 0:
+        return True
+    return False
+
 
 
 def combate(inimigo=False, opional=False):
     global jogador
     jogador = personagem
     print("UM COMBATE COMEÇOU")
-
-    ordem = turno(jogador=ps, inimigo=True, nomeini="walker")
-
+    
+    acoes_inimgo = ["atacar", "curar"]
+ 
     while jogador["vida"] > 0 and walkercomum["vida"] > 0:
-        for atacante in ordem:
-            if jogador["vida"] <= 0 or walkercomum["vida"] <= 0:
-                break
+       
 
-            linha("-")
-            sleep(1.5)
-            
+       
+
+        ordem = turno(jogador=ps, inimigo=True, nomeini="walker")
+    
+
+        for atacante in ordem:
             if atacante == ps:
                 print(f"VEZ DE {ps.upper()}:")
                 mudarcenario("Atacar", "fugir")
-                opcao = escolha()
+                opcao = escolhe()
 
                 if opcao == 0:
-            
-                    dano = jogador["ataque"] - walkercomum["defesa"]
-                    if dano < 1:
-                        dano = 1  
-                    walkercomum["vida"] -= dano
-
+                    dano = calcular_ataque(jogador, walkercomum)
                     print(f"{ps} deu {dano} de dano!")
                     print(
                         f"O inimigo está com {walkercomum['vida']} de HP\n"
                     )
-
+                    sleep(2)
+                    os.system("cls")
+                
                 elif opcao == 1:
                     print("Você tentou fugir!")
+                    print("Mas não conseguiu")
+                    
+                
+                elif opcao == 2:
+                    exit()
+                else:
+                    print("opcao invalida")
+
+
+                if verifica_morte(walkercomum) == True:
+                    print("VOCÊ DERROTOU O ROBÔ")
+                    count = 0
+                    count += 1
+                    estatistica(kills=count)
+
+
+            turno_inimigo(walkercomum,*acoes_inimgo)
+            
+            if verifica_morte(jogador) == True:
+                c = 0
+                c += 1
+                estatistica(deaths=c)
+                while True:
+                    per= input("você morreu. tentar denovo? [s/n]").upper()[0]
+                    if per in "SN":
+                        break
+                    print("resposta invalida")    
+                if per == "N":
+                    exit()        
+                else:
+                    jogador["vida"] = 100
+                    walkercomum["vida"] = 100
+                    continue
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def turno_inimigo(inimigo,*acoes):
+    print("VEZ DO INIMIGO:")
+    
+
+    escolha = random.choice(acoes)
+                        
+    if escolha == "atacar":
+        print(f"O INIMGO ESCOLHEU: ATACAR")
+        escudo = calcular_ataque(inimigo,jogador)
+        print(f"O INIMIGO DEU {escudo} DE DANO.")
+        print(f"VIDA RESTANTE: {max(0, jogador["vida"])}HP")
+
+    elif escolha == "curar":
+        if inimigo["vida"] < 100: 
+            executar_cura(inimigo)
+        elif inimigo["vida"] == 100:
+            print(f"o inimigo tentou se curar mas tava de hp cheio")
+           
 
 
 
@@ -253,46 +345,19 @@ def combate(inimigo=False, opional=False):
 def turno(jogador,inimigo=False, nomeini="txt"):
     if inimigo == True:
         inimigo =  nomeini
-        print(inimigo)
-    
+
     turn = [jogador,inimigo]
-    escolhido = random.sample(turn,k=2)
-    return escolhido 
-ordem = turno
+    random.shuffle(turn)
+    return turn
+       
+   
+
 
 def mudarcenario(*cenario):
-    for item in cenarios[:]:
-        item.clear()
-    for i in cenario:
-        item.append(i)
+    cenarios[0] = list(cenario)
     arrumarlista()
     linha("=")
-    mostraropcoes()
-    linha("=")
-
-
-
-def combate(inimigo=False,opional=False):
-    global jogador
-    jogador = personagem
-    print("UM COMBATE COMEÇOU")
-    print('O ESCOLHIDO FOI:')
-    ordem = turno(jogador=ps,inimigo=True, nomeini="walker")
-    while jogador["vida"] > 0 and walkercomum["vida"] > 0:
-        for atacante in ordem:
-            if jogador["vida"] <= 0 or walkercomum["vida"] <= 0:
-                break
-            sleep(1.5)
-        if atacante == ps:
-            print(f"VEZ DE {ps.upper()}:")
-            mudarcenario("Atacar", "fugir")
-            opcao = escolha()
-            if opcao == 0:
-                escudo =  walkercomum["defesa"] =- jogador["ataque"]
-                dano = escudo =- walkercomum["vida"]
-                print(f"{ps} deu {dano} de dano ")
-                print(f"o inimigo esta com {walkercomum["vida"]} de hp")
-
+  
 
     
 
