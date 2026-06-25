@@ -1,4 +1,4 @@
-from principal import iniciar_jogador
+from jogador import iniciar_jogador
 from prelore import inicial,inicio
 from ilustração import limpartela
 from luta import combate

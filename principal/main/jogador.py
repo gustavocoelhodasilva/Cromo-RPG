@@ -9,7 +9,7 @@ ps = ""
 
 def criar_personagem():
     global ps
-    nm = input("Digite o seu nome: ").strip()
+    nm = input("\033[35mDigite o seu nome:\033[0m ").strip()
     if not nm:
         nm = "Sobrevivente"
     
@@ -32,10 +32,10 @@ def atributos(vida=100, defesa=4, ataque=20, cura=5, xp=10, nivel=1):
 
 
 def mostrar_atributos():
-    cabeçalho("STATUS INICIAL", sinal="=+")
+    cabeçalho("\033[36mSTATUS INICIAL\033[0m", sinal="=+")
     sleep(2)
     for k, v in personagem.items():
-        print(f"{k.capitalize()}: {v}")
+        print(f"\033[33m{k.capitalize()}:\033[0m \033[1;34m{v}\033[0m")
         sleep(0.3)
     linha("=")
     sleep(1)

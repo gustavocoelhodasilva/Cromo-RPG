@@ -4,20 +4,29 @@ from time import sleep
 
 def cabeçalho(txt, sinal="==="):
     limpartela()
-    l1 = sinal * len(txt)
-    print(f"{l1:^20}")
-    print(f"{txt:^20}")
-    print(f"{l1:^20}")
+    cor = "\033[31m"
+    reset = "\033[0m"
+    sn = sinal
+    sncor = f"{cor}{sn}{reset}"
+    l1 = sncor * len(txt)
+    print(f"{cor}{l1:^20}{reset}")
+    print(f"{cor}{txt:^20}{reset}")
+    print(f"{cor}{l1:^20}{reset}")
 
 def limpartela():
     os.system("cls" if os.name == "nt" else "clear")
 
 
 def linha(tp="=", qtde=20):
+    cor = "\033[31m"
+    reset = "\033[0m"
+    sn = tp
+    sncor = f"{cor}{sn}{reset}"
+
     if qtde == 20:
-        print(tp*qtde)
+        print(sncor*qtde)
     else:
-        print(tp*qtde)
+        print(sncor*qtde)
 
 
 

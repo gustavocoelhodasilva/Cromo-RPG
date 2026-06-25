@@ -6,14 +6,20 @@ from inimigo import criarinimigo
 from ilustração import limpartela
 from cenario import mudarcenario, escolhe
 from ilustração import estatistica
-fuga = (1,2,3,4,5)
+fuga = (1, 2, 3, 4, 5)
+
+COR_PLAYER = "\033[1;32m"
+COR_INIMIGO = "\033[34m"
+COR_SISTEMA = "\033[33m"
+RESET = "\033[0m"
+
 
 def calcular_ataque(atacante, defensor):
     dano = atacante["ataque"] - defensor["defesa"]
     if dano < 1:
         dano = 1
-    defensor["vida"] -= dano    
-    return dano 
+    defensor["vida"] -= dano
+    return dano
 
 
 def executar_cura(quem_cura, vida=100):
@@ -35,22 +41,25 @@ def turno(nome_jogador, nome_inimigo="walker"):
 
 
 def turno_inimigo(inimigo, jogador):
-    print("\nVEZ DO INIMIGO:")
+    print(f"\n{COR_INIMIGO}VEZ DO INIMIGO:{RESET}")
     sleep(1)
-    
+
     escolha = random.choice(["atacar", "curar"])
-    
+
     if escolha == "atacar":
-        print("O INIMGO ESCOLHEU: ATACAR")
+        print(f"{COR_INIMIGO}O INIMGO ESCOLHEU: ATACAR{RESET}")
+        sleep(2)
         dano = calcular_ataque(inimigo, jogador)
-        print(f"O INIMIGO DEU {dano} DE DANO.")
-        print(f"VIDA RESTANTE: {max(0, jogador.get('vida', 0))}HP")
+        print(f"{COR_INIMIGO}O INIMIGO DEU {dano} DE DANO.{RESET}")
+        sleep(1)
+        print(f"{COR_SISTEMA}Vida restante: {max(0, jogador.get('vida', 0))}HP{RESET}")
+        sleep(2)
     else:
         if inimigo["vida"] < 100:
             cura = executar_cura(inimigo)
-            print(f"o inimigo se curou em {cura}")
+            print(f"{COR_INIMIGO}o inimigo se curou em {cura}{RESET}")
         else:
-            print("o inimigo tentou se curar mas tava de hp cheio")
+            print(f"{COR_INIMIGO}o inimigo tentou se curar mas tava de hp cheio{RESET}")
     sleep(1.5)
 
 
@@ -58,62 +67,59 @@ def combate():
     global jogador
     jogador = get_personagem().copy()
     nome = get_ps()
-    
+
     inimigo = criarinimigo()
-    
-    print("UM COMBATE COMEÇOU")
+
+    print(f"{COR_SISTEMA}UM COMBATE COMEÇOU{RESET}")
     sleep(1)
-    
-  
 
     while jogador.get("vida", 0) > 0 and inimigo.get("vida", 0) > 0:
-        
+
         ordem = turno(nome, "walker")
 
         for atacante in ordem:
             limpartela()
-            
-            if atacante == nome:   # Vez do jogador
-                print(f"VEZ DE {nome.upper()}:")
+
+            if atacante == nome:
+                print(f"{COR_PLAYER}VEZ DE {nome.upper()}:{RESET}")
                 mudarcenario("Atacar", "fugir")
                 opcao = escolhe()
 
                 if opcao == 0:
                     dano = calcular_ataque(jogador, inimigo)
-                    print(f"{nome} deu {dano} de dano!")
-                    print(f"O inimigo está com {inimigo['vida']} de HP\n")
+                    print(f"{COR_PLAYER}{nome} deu {dano} de dano!{RESET}")
+                    print(f"{COR_SISTEMA}O inimigo está com {inimigo['vida']} de HP\n{RESET}")
                     sleep(2)
-                
+
                 elif opcao == 1:
-                    print("Você tentou fugir!")
+                    print(f"{COR_PLAYER}Você tentou fugir!{RESET}")
                     tentativa = random.choice(fuga)
                     if tentativa == 1:
-                        print("você fugiu com sucesso")
+                        print(f"{COR_PLAYER}você fugiu com sucesso{RESET}")
                         exit()
                     else:
-                        print("Mas não conseguiu")
+                        print(f"{COR_PLAYER}Mas não conseguiu{RESET}")
                     sleep(1.5)
-                
+
                 elif opcao == 2:
                     exit()
                 else:
-                    print("opcao invalida")
+                    print(f"{COR_SISTEMA}Opcao invalida{RESET}")
                     sleep(1)
 
                 if verifica_morte(inimigo):
-                    print("VOCÊ DERROTOU O ROBÔ")
+                    print(f"{COR_SISTEMA}VOCÊ DERROTOU O ROBÔ{RESET}")
                     estatistica(kills=1)
                     return
 
-            else:   # Vez do inimigo
+            else:
                 turno_inimigo(inimigo, jogador)
 
-            # Checa morte do jogador
             if verifica_morte(jogador):
                 estatistica(deaths=1)
-                print("\nvocê morreu.")
+                print(f"\n{COR_SISTEMA}Você morreu.{RESET}")
                 while True:
-                    per = input("tentar denovo? [s/n]").upper()[0]
+                    per = input(f"{COR_SISTEMA}Tentar denovo? [s/n]{RESET}").upper()
                     if per in "SN":
                         break
                 if per == "N":
