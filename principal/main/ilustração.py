@@ -1,16 +1,16 @@
 import os
 from time import sleep
-
-
 def cabeçalho(txt, sinal="==="):
     limpartela()
+    global cor,reset
+    
     cor = "\033[31m"
     reset = "\033[0m"
     sn = sinal
     sncor = f"{cor}{sn}{reset}"
     l1 = sncor * len(txt)
     print(f"{cor}{l1:^20}{reset}")
-    print(f"{cor}{txt:^20}{reset}")
+    print(f"{cor}{txt:^20}{reset}".center(20))
     print(f"{cor}{l1:^20}{reset}")
 
 def limpartela():
@@ -18,8 +18,6 @@ def limpartela():
 
 
 def linha(tp="=", qtde=20):
-    cor = "\033[31m"
-    reset = "\033[0m"
     sn = tp
     sncor = f"{cor}{sn}{reset}"
 
@@ -33,6 +31,28 @@ def linha(tp="=", qtde=20):
 def estatistica(kills=0,deaths=0):
     derrotados = kills
     morto = deaths
-    print(f"VOÇÊ MORREU {morto} VEZES")
-    print(f"VOCÊ MATOU {derrotados} INIMIGOS")
-
+    limpartela()
+    print(f"\033[36mESTATISTICA DE JOGO:\033[0m")
+    linha()
+    print(f"VOCÊ MORREU {cor}{morto}{reset} VEZES")
+    linha()
+    print(f"VOCÊ MATOU {cor}{derrotados}{reset} INIMIGOS")
+    linha()
+    print("\033[32mTIPO DE SOBREVIVENTE:\033[0m")
+    linha()
+    if derrotados == 0:
+        print("\033[33mSOBREVIVENTE PACIFICO\033[0m")
+        linha()
+    elif derrotados < 10:
+        print("\033[33mCAÇADOR MIRIM\033[0m")
+        linha()
+    elif derrotados > 10 and derrotados < 50:
+        print("\033[33mBERSEKER\033[0m")
+        linha()
+    elif derrotados == 100:
+        print("\033[33mEXTERMINADOR DO FUTURO\033[0m")
+        linha()
+    if morto == 100:
+        print("\033[33mWILIAM AFTON\033[0m")
+        linha()
+    

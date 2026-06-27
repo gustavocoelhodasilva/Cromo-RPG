@@ -36,6 +36,7 @@ def mostrar_atributos():
     sleep(2)
     for k, v in personagem.items():
         print(f"\033[33m{k.capitalize()}:\033[0m \033[1;34m{v}\033[0m")
+        linha(tp="-")
         sleep(0.3)
     linha("=")
     sleep(1)

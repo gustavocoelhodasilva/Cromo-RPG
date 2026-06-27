@@ -3,7 +3,7 @@ from time import sleep
 from sys import exit
 from jogador import get_ps, get_personagem
 from inimigo import criarinimigo
-from ilustração import limpartela
+from ilustração import limpartela,linha
 from cenario import mudarcenario, escolhe
 from ilustração import estatistica
 fuga = (1, 2, 3, 4, 5)
@@ -41,25 +41,26 @@ def turno(nome_jogador, nome_inimigo="walker"):
 
 
 def turno_inimigo(inimigo, jogador):
-    print(f"\n{COR_INIMIGO}VEZ DO INIMIGO:{RESET}")
+    print(f"\033[36mVEZ DO INIMIGO:\033[0m")
+    linha()
     sleep(1)
 
     escolha = random.choice(["atacar", "curar"])
 
     if escolha == "atacar":
-        print(f"{COR_INIMIGO}O INIMGO ESCOLHEU: ATACAR{RESET}")
+        print(f"{COR_INIMIGO}O INIMGO ESCOLHEU:{RESET} \033[33mATACAR\033[0m")
         sleep(2)
         dano = calcular_ataque(inimigo, jogador)
-        print(f"{COR_INIMIGO}O INIMIGO DEU {dano} DE DANO.{RESET}")
+        print(f"{COR_INIMIGO}O INIMIGO DEU: {RESET} \033[33m{dano} DE DANO.\033[0m")
         sleep(1)
         print(f"{COR_SISTEMA}Vida restante: {max(0, jogador.get('vida', 0))}HP{RESET}")
         sleep(2)
     else:
-        if inimigo["vida"] < 100:
+        if inimigo["vida"] < 75:
             cura = executar_cura(inimigo)
-            print(f"{COR_INIMIGO}o inimigo se curou em {cura}{RESET}")
+            print(f"{COR_INIMIGO}O INIMIGO ACABA DE SE CURAR EM: {RESET}\033[32m{cura}\033[0mHP")
         else:
-            print(f"{COR_INIMIGO}o inimigo tentou se curar mas tava de hp cheio{RESET}")
+            print(f"{COR_INIMIGO}O INIMIGO TENTA SE CURAR. MAIS ESTA COM O HP CHEIO.{RESET}")
     sleep(1.5)
 
 
@@ -92,23 +93,24 @@ def combate():
                     sleep(2)
 
                 elif opcao == 1:
-                    print(f"{COR_PLAYER}Você tentou fugir!{RESET}")
+                    print(f"{COR_PLAYER}VOCÊ TENTA FUGIR{RESET}")
                     tentativa = random.choice(fuga)
                     if tentativa == 1:
-                        print(f"{COR_PLAYER}você fugiu com sucesso{RESET}")
+                        print(f"{COR_PLAYER}VOCÊ FUGIU COM SUCESSO!{RESET}")
                         exit()
                     else:
-                        print(f"{COR_PLAYER}Mas não conseguiu{RESET}")
+                        print(f"{COR_PLAYER}MAS NÃO CONSEGUIU{RESET}")
                     sleep(1.5)
 
                 elif opcao == 2:
                     exit()
                 else:
-                    print(f"{COR_SISTEMA}Opcao invalida{RESET}")
+                    print(f"{COR_SISTEMA}Opcao INVALIDA{RESET}")
                     sleep(1)
 
                 if verifica_morte(inimigo):
                     print(f"{COR_SISTEMA}VOCÊ DERROTOU O ROBÔ{RESET}")
+                    linha()
                     estatistica(kills=1)
                     return
 
@@ -117,7 +119,7 @@ def combate():
 
             if verifica_morte(jogador):
                 estatistica(deaths=1)
-                print(f"\n{COR_SISTEMA}Você morreu.{RESET}")
+                print(f"\n{COR_SISTEMA}VOCÊ MORREU{RESET}")
                 while True:
                     per = input(f"{COR_SISTEMA}Tentar denovo? [s/n]{RESET}").upper()
                     if per in "SN":

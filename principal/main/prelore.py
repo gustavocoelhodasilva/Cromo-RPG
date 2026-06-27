@@ -37,15 +37,19 @@ def inicial():
             limpartela()
             count += 1
        
-        if opcao == 0 and count == 1:
+        elif opcao == 0 and count == 1:
             print_lore("Você ja saiu da capsula")
 
-        elif opcao == 1:
+        elif opcao == 1 and count == 1:
             print_lore("Você decide caminhar até a megacidade")
             sleep(2)
             cidade()
             limpartela()
             break
+    
+        elif opcao == 1 and count < 1:
+            print_lore("SAIA DA CAPSULA PRIMEIRO")
+            
         elif opcao == 2:
             print("\033[31mfechando o jogo\033[0m")
             exit()
