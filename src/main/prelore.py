@@ -39,7 +39,8 @@ def inicial():
        
         elif opcao == 0 and count == 1:
             print_lore("Você ja saiu da capsula")
-
+            sleep(2)
+            limpartela()
         elif opcao == 1 and count == 1:
             print_lore("Você decide caminhar até a megacidade")
             sleep(2)
@@ -49,6 +50,8 @@ def inicial():
     
         elif opcao == 1 and count < 1:
             print_lore("SAIA DA CAPSULA PRIMEIRO")
+            sleep(2)
+            limpartela()
             
         elif opcao == 2:
             print("\033[31mfechando o jogo\033[0m")
