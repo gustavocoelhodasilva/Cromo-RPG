@@ -15,18 +15,22 @@ RESET = "\033[0m"
 
 
 def calcular_ataque(atacante, defensor):
-    dano = atacante["ataque"] - defensor["defesa"]
+    atk = random.randint(10, atacante["ataque"])
+    print(f"Ataque bruto: {atk} | Defesa do alvo: {defensor['defesa']}")
+    dano = atk - defensor["defesa"]
     if dano < 1:
         dano = 1
     defensor["vida"] -= dano
     return dano
 
 
-def executar_cura(quem_cura, vida=100):
+def executar_cura(quem_cura, vida=100,inimi=True):
     if quem_cura["vida"] < vida:
         quem_cura["vida"] += quem_cura["cura"]
+        sleep(1)
     else:
         quem_cura["vida"] = vida
+        sleep(1)
     return quem_cura["cura"]
 
 
@@ -53,12 +57,14 @@ def turno_inimigo(inimigo, jogador):
         dano = calcular_ataque(inimigo, jogador)
         print(f"{COR_INIMIGO}O INIMIGO DEU: {RESET} \033[33m{dano} DE DANO.\033[0m")
         sleep(1)
-        print(f"{COR_SISTEMA}Vida restante: {max(0, jogador.get('vida', 0))}HP{RESET}")
-        sleep(2)
+        linha()
+        print(f"{COR_SISTEMA}Sua vida restante: {max(0, jogador.get('vida', 0))}HP{RESET}")
+        sleep(3)
     else:
         if inimigo["vida"] < 75:
             cura = executar_cura(inimigo)
             print(f"{COR_INIMIGO}O INIMIGO ACABA DE SE CURAR EM: {RESET}\033[32m{cura}\033[0mHP")
+            print(f"\033[32mVida do inimigo: {inimigo["vida"]}\033[0m")
         else:
             print(f"{COR_INIMIGO}O INIMIGO TENTA SE CURAR. MAIS ESTA COM O HP CHEIO.{RESET}")
     sleep(1.5)
@@ -83,17 +89,18 @@ def combate():
 
             if atacante == nome:
                 print(f"{COR_PLAYER}VEZ DE {nome.upper()}:{RESET}")
-                mudarcenario("Atacar", "fugir")
+                mudarcenario("Atacar", "Fugir","Curar")
                 opcao = escolhe()
 
                 if opcao == 0:
                     dano = calcular_ataque(jogador, inimigo)
                     print(f"{COR_PLAYER}{nome} deu {dano} de dano!{RESET}")
                     print(f"{COR_SISTEMA}O inimigo está com {inimigo['vida']} de HP\n{RESET}")
-                    sleep(2)
+                    sleep(3)
 
                 elif opcao == 1:
                     print(f"{COR_PLAYER}VOCÊ TENTA FUGIR{RESET}")
+                    sleep(2)
                     tentativa = random.choice(fuga)
                     if tentativa == 1:
                         print(f"{COR_PLAYER}VOCÊ FUGIU COM SUCESSO!{RESET}")
@@ -101,8 +108,18 @@ def combate():
                     else:
                         print(f"{COR_PLAYER}MAS NÃO CONSEGUIU{RESET}")
                     sleep(1.5)
-
-                elif opcao == 2:
+                elif opcao  == 2:
+                   if jogador["vida"] < 100:
+                        cura = executar_cura(jogador)
+                        print(f"{COR_PLAYER}VOCÊ ACABA DE SE CURAR EM: {RESET}\033[32m{cura}\033[0mHP")
+                        print(f"\033[32mSua vida: {jogador["vida"]}\033[0m")
+                        sleep(3)
+                   else:
+                        print(f"{COR_PLAYER}VOCÊ TENTA SE CURAR. MAIS ESTA COM O HP CHEIO.{RESET}")
+                        sleep(3)
+                       
+                elif opcao == 3:
+                    print("fechando jogo...")
                     exit()
                 else:
                     print(f"{COR_SISTEMA}Opcao INVALIDA{RESET}")
