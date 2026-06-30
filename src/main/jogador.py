@@ -1,5 +1,5 @@
 from time import sleep
-
+import random
 from ilustração import limpartela, cabeçalho, linha
 
 # Variáveis globais
@@ -12,7 +12,7 @@ def criar_personagem():
     nm = input("\033[35mDigite o seu nome:\033[0m ").strip()
     if not nm:
         nm = "Sobrevivente"
-    
+
     ps = nm
     sleep(1.5)
     cabeçalho(f"Bem vindo ao futuro {ps}", sinal="*")
@@ -22,6 +22,7 @@ def criar_personagem():
 
 def atributos(vida=100, defesa=4, ataque=20, cura=5, xp=10, nivel=1):
     global personagem, ps
+
     personagem["nome"] = ps
     personagem["vida"] = vida
     personagem["defesa"] = defesa
@@ -43,16 +44,17 @@ def mostrar_atributos():
 
 
 def iniciar_jogador():
-    global personagem, ps 
-    ps = ""                 
-    
+    global personagem, ps
+    ps = ""
+
     criar_personagem()
     atributos()
     mostrar_atributos()
-    
+
 
 def get_ps():
     return ps
+
 
 def get_personagem():
     return personagem
