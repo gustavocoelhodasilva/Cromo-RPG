@@ -1,17 +1,19 @@
 import os
 from time import sleep
-def cabeçalho(txt, sinal="==="):
+def cabeçalho(txt, sinal="="):
     limpartela()
-    global cor,reset
-    
+    global cor, reset
     cor = "\033[31m"
     reset = "\033[0m"
-    sn = sinal
-    sncor = f"{cor}{sn}{reset}"
-    l1 = sncor * len(txt)
+
+  
+    titulo = txt.upper()
+    l1 = sinal * 40
+
     print(f"{cor}{l1:^20}{reset}")
-    print(f"{cor}{txt:^20}{reset}".center(20))
+    print(f"{cor}{txt.center(35)}{reset}")
     print(f"{cor}{l1:^20}{reset}")
+
 
 def limpartela():
     os.system("cls" if os.name == "nt" else "clear")
