@@ -23,6 +23,7 @@ def inicial():
     while True:
         opcao = escolhe()
         if opcao == 0 and count < 1: 
+            limpartela()
             sleep(1)
             print_lore("VOCÊ VE UM MUNDO INCRIVEL E NÃO ACREDITA EM SEUS OLHOS O MUNDO MUDOU TANTO")    
             sleep(3)
@@ -61,6 +62,7 @@ def inicial():
 limpartela()
 
 def cidade():
+    limpartela()
     print_lore("Você vê um cenario caótico")
     sleep(1)
     print_lore("Predios combrem o céu")
