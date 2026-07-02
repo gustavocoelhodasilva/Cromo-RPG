@@ -1,9 +1,9 @@
 
 def dicstatus(
-    ataque=20,
+    ataque=25,
     vida=75,
     defesa=5,
-    cura=3,
+    cura=8,
     segundaforma=False,
     furia=False,
     fatordecura=False,
