@@ -4,7 +4,6 @@ from ilustração import limpartela
 from luta import combate
 
 def main():
-    inicio()
     limpartela()
     iniciar_jogador()
     limpartela()

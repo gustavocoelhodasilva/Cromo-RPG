@@ -6,6 +6,7 @@ from inimigo import criarinimigo
 from ilustração import limpartela,linha
 from cenario import mudarcenario, escolhe
 from ilustração import estatistica
+from inventario import inventario
 fuga = (1, 2, 3, 4, 5)
 chance = (1,2,3)
 
@@ -169,7 +170,8 @@ def combate():
      
             if atacante == nome:
                 print(f"{COR_PLAYER}VEZ DE {nome.upper()}:{RESET}")
-                mudarcenario("Atacar", "Fugir","Curar")
+                linha()
+                mudarcenario("Atacar", "Fugir","Curar","Inventario")
                 opcao = escolhe()
               
                 if opcao == 0:
@@ -194,8 +196,18 @@ def combate():
                    else:
                        status = "bloqueado"
                    executar_cura(jogador, status, is_player=True)
-
+                
                 elif opcao == 3:
+                    while True:
+                        inv = inventario()
+                        if inv  == 3:
+                            break
+                        if inv == "Adrenalina":
+                            print(f"{COR_PLAYER}VOCÊ USOU A SERINGA DE ADRENALINA VC GANHA 16 DE DANO A MAIS{RESET}")
+                            jogador["ataque"] += 16
+                            break
+
+                elif opcao == 4:
                     print("fechando jogo...")
                     exit()
                 else:

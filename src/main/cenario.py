@@ -3,7 +3,7 @@ from ilustração import linha
 from time import sleep
 cenarios = [
     ["Sair da capsula", "Caminhar até a cidade"]  # inicial
-
+    
 ]
 def arrumarlista():
     for lista in cenarios:
@@ -30,4 +30,4 @@ def escolhe():
 def mudarcenario(*cenario):
     cenarios[0] = list(cenario)
     arrumarlista()
-    linha("=")
+    
