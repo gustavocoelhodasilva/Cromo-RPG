@@ -1,17 +1,17 @@
-
 SERINGAS = [ 
-("Adrelina","dano",16),
-("Sangue","cura",14),
-("Trevo","sorte",50)
+("Adrenalina","dano",16,2),
+("Sangue","cura",14,2),
+("Trevo","sorte",50,1)
 ]
 
 ARMAS = [
-("Plasma", "Raio", 30),
-("HellFire","Fogo", 25),
-("Tsunami", "Agua", 40),
-("TerraForm","Pedra", 35)
+("pé de cabra","Contato",15,0),
+("Plasma", "Raio", 30,0),
+("HellFire","Fogo", 25,0),
+("Tsunami", "Agua", 40,0),
+("TerraForm","Pedra", 35,0)
 ]
 
 ITENS = [ 
-("CriptoMoedas", "Item", 0)
+("CriptoMoedas", "Item", 0,10)
 ]

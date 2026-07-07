@@ -1,4 +1,5 @@
 import random
+import items
 from time import sleep
 from sys import exit
 from jogador import get_ps, get_personagem
@@ -7,8 +8,8 @@ from ilustração import limpartela,linha
 from cenario import mudarcenario, escolhe
 from ilustração import estatistica
 from inventario import inventario
-fuga = (1, 2, 3, 4, 5)
-chance = (1,2,3)
+fuga = (1, 2, 3, 4, 5,6)
+chance = (1,2,3,4)
 
 COR_PLAYER = "\033[1;32m"
 COR_INIMIGO = "\033[34m"
@@ -151,7 +152,7 @@ def turno_inimigo(inimigo, jogador):
 
 def combate():
     """Loop principal do combate: alterna turnos entre jogador e inimigo até um dos dois morrer."""
-    global jogador,inimigo
+    global jogador,inimigo,chance,fuga
     jogador = get_personagem().copy()
 
     nome = get_ps()
@@ -198,15 +199,32 @@ def combate():
                    executar_cura(jogador, status, is_player=True)
                 
                 elif opcao == 3:
-                    while True:
+                    
                         inv = inventario()
-                        if inv  == 3:
-                            break
-                        if inv == "Adrenalina":
-                            print(f"{COR_PLAYER}VOCÊ USOU A SERINGA DE ADRENALINA VC GANHA 16 DE DANO A MAIS{RESET}")
-                            jogador["ataque"] += 16
-                            break
-
+                        nomes = []
+                        for t in items.SERINGAS:
+                            nomes.append(t[0])
+                        if inv["nome"] in nomes:    
+                            if inv["tipo"] == "dano":
+                                jogador["ataque"] += inv["efeito"]
+                                print(f"{COR_PLAYER}VOCÊ USOU A SERINGA {inv["nome"]} E GANHOU {inv["efeito"]} DE DANO{RESET} ")
+                                print(f"DANO ATUAL: {jogador["ataque"]}")
+                                sleep(2)
+                            elif inv["tipo"] == "cura":
+                                jogador["vida"] += inv["efeito"]
+                                print(F"{COR_INIMIGO}VOCÊ USOU A SERINGA {inv["nome"]} E GANHOU {inv["efeito"]} DE HP")
+                                print(f"VIDA ATUAl {jogador["vida"]}HP")
+                                sleep(2)
+                            elif inv["tipo"] == "sorte":
+                                metade_chance = len(chance) // 2
+                                metade_fuga = len(fuga) // 2
+                                chance = chance[:metade_chance]
+                                fuga = fuga[:metade_fuga]
+                                print(f"{COR_PLAYER}VOCÊ USOU A SERINGA {inv['nome']}!")
+                                print(f"AGORA VOCÊ TEM MUITO MAIS SORTE PARA FUGIR E SE CURAR!{RESET}")
+                                sleep(2)
+                                
+                            
                 elif opcao == 4:
                     print("fechando jogo...")
                     exit()

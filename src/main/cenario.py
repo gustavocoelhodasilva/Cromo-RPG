@@ -1,5 +1,4 @@
 from verificadores import verificarnumero
-from ilustração import linha
 from time import sleep
 cenarios = [
     ["Sair da capsula", "Caminhar até a cidade"]  # inicial
@@ -30,4 +29,6 @@ def escolhe():
 def mudarcenario(*cenario):
     cenarios[0] = list(cenario)
     arrumarlista()
-    
+    return cenarios
+
+
