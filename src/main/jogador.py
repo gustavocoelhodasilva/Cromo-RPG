@@ -6,6 +6,7 @@ personagem = {}
 ps = ""
 
 
+
 def criar_personagem():
     global ps
     nm = input("\033[35mDigite o seu nome:\033[0m ").strip()
@@ -19,7 +20,7 @@ def criar_personagem():
     limpartela()
 
 
-def atributos(vida=100, defesa=4, ataque=20, cura=10, xp=10, nivel=1):
+def atributos(vida=100, defesa=4, ataque=1000, cura=10, xp=0, nivel=0):
     global personagem, ps
 
     personagem["nome"] = ps
@@ -29,6 +30,34 @@ def atributos(vida=100, defesa=4, ataque=20, cura=10, xp=10, nivel=1):
     personagem["cura"] = cura
     personagem["xp"] = xp
     personagem["nivel"] = nivel
+atributos()
+
+def nivel(xp=0):
+    personagem["xp"] += xp
+    nivel = (personagem["xp"] // 10) + 1
+   
+    print(f"seu nivel é {nivel}")
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def mostrar_atributos():
