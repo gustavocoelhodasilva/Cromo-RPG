@@ -1,7 +1,9 @@
-m = int(input("m de 5"))
-n = str(m)
-print(n[-1])
-if n[-1] == "0" or n[-1] == "5":
-    print("sim")
-else:
-    print("nao")
+from inventario import inventario,seringas
+from items import SERINGAS,ARMAS,ITENS
+from time import sleep
+import random
+seringa =   SERINGAS
+aleatorio = random.choice(seringa)
+aleatorio["qtde"] += 1
+print(aleatorio)
+

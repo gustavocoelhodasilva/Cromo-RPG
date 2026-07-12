@@ -4,7 +4,8 @@ from ilustração import limpartela, cabeçalho, linha
 # Variáveis globais
 personagem = {}
 ps = ""
-
+COR_SISTEMA = "\033[1;33m"
+RESET = "\033[0m"
 
 
 def criar_personagem():
@@ -20,7 +21,7 @@ def criar_personagem():
     limpartela()
 
 
-def atributos(vida=100, defesa=4, ataque=1000, cura=10, xp=0, nivel=0):
+def atributos(vida=100, defesa=4, ataque=1000, cura=10):
     global personagem, ps
 
     personagem["nome"] = ps
@@ -28,40 +29,17 @@ def atributos(vida=100, defesa=4, ataque=1000, cura=10, xp=0, nivel=0):
     personagem["defesa"] = defesa
     personagem["ataque"] = ataque
     personagem["cura"] = cura
-    personagem["xp"] = xp
-    personagem["nivel"] = nivel
-atributos()
-
-def nivel(xp=0):
-    personagem["xp"] += xp
-    nivel = (personagem["xp"] // 10) + 1
    
-    print(f"seu nivel é {nivel}")
-    
-
-    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+atributos()
 
 
 
 
 
 def mostrar_atributos():
-    cabeçalho("STATUS INICIAL", sinal="=")
+    cabeçalho("STATUS", sinal="=")
     sleep(2)
     largura = 35
     cor1 = "\033[33m"
@@ -90,4 +68,3 @@ def get_ps():
 
 def get_personagem():
     return personagem
-

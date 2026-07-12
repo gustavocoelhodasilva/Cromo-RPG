@@ -14,12 +14,16 @@ def seringas(*seringas):
     lista = []
     
     for caixa in armazenamento:
-       tiposdeseringa = {}
-       tiposdeseringa["nome"] = caixa[0]
-       tiposdeseringa["tipo"] = caixa[1]
-       tiposdeseringa["efeito"] = caixa[2]
-       tiposdeseringa["qtde"] = caixa[3]
-       lista.append(tiposdeseringa)
+
+       lista.append(
+           {"nome":caixa["nome"],
+            "tipo": caixa["tipo"],
+            "efeito": caixa["efeito"],
+            "qtde": caixa["qtde"]
+            })
+         
+  
+       
     
     return lista
 
@@ -108,14 +112,16 @@ def inventario():
                 escolheu = escolhe()
                 if escolheu == 0:
                     if seringa_escolhida["qtde"] == 0:
-                        print("Você não liberou este item")
+                        print("Você não tem esse item")
                         sleep(2)
                     else:
-                        seringa_escolhida["qtde"] - 1
-                        itemoriginal = items.SERINGAS[escolha_seringa] 
-                        items.SERINGAS[escolha_seringa] = (itemoriginal[0],itemoriginal[1],itemoriginal[2],itemoriginal[3] - 1)
-    
+                     
+                        items.SERINGAS[escolha_seringa]["qtde"]  -= 1
+                      
+
                         print("Item equipado")
+                        print(f"quantidade restante {items.SERINGAS[escolha_seringa]["qtde"]}")
+
                         sleep(2)
                         return seringa_escolhida
             
@@ -166,13 +172,12 @@ def inventario():
                 escolheu = escolhe()
                 if escolheu == 0:
                     if arma_escolhida["qtde"] == 0:
-                        print("Você não liberou este item")
+                        print("Você não liberou esta arma")
                         sleep(2)
                     else:
-                        arma_escolhida["qtde"] - 1 
-                        aramoriginal = items.ARMAS[escolha_Arma]
-                        items.ARMAS[escolha_Arma] = (aramoriginal[0],aramoriginal[1],aramoriginal[2],aramoriginal[3]-1)
-                        
+                        items.ARMAS[escolha_Arma]["qtde"] -= 1
+                       
+                        print(f"quantidade restante {items.ARMAS[escolha_Arma]["qtde"]}")
                         print("Item equipado")
                         sleep(2)
                         return arma_escolhida
@@ -213,18 +218,17 @@ def inventario():
                 escolheu = escolhe()
                 if escolheu == 0:
                     if item_escolhido["qtde"] == 0:
-                        print("Você não liberou este item")
+                        print("Você não tem mais moedas. POBRE")
                         sleep(2)
                     else:
-                        item_escolhido["qtde"] - 1
+                        items.ITENS[escolha_Item]["qtde"] -= 1
 
-                        itemoriginal = items.ITENS[escolha_Item] 
-                        items.ITENS[escolha_Item] = (itemoriginal[0],itemoriginal[1], itemoriginal[2],itemoriginal[3])
-                        
+    
                         print("Item equipado")
+                        print(f"quantidade restante {items.ITENS[escolha_Item]["qtde"]}")
                         sleep(2)
                         return item_escolhido
-            
+
                 if escolheu == 1:
                     break
 

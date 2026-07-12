@@ -34,7 +34,7 @@ def dicstatus(
         walkermedico["nome"] = nome  # Adicionado
         walkermedico["ataque"] = ataque
         walkermedico["defesa"] = defesa + 4
-        walkermedico["cura"] = cura * 2
+        walkermedico["cura"] = cura * 4
         walkermedico["vida"] = vida + 5
         return walkermedico
 

@@ -1,17 +1,52 @@
 SERINGAS = [ 
-("Adrenalina","dano",16,2),
-("Sangue","cura",14,2),
-("Trevo","sorte",50,1),
+{"nome":"Adrenalina",
+"tipo": "dano",
+"efeito": 16,
+"qtde": 2
+ }, 
+
+{"nome":"Sangue",
+"tipo": "cura",
+"efeito": 14,
+"qtde": 3
+ },
+
+{"nome":"Trevo",
+"tipo": "sorte",
+"efeito": 50,
+"qtde": 1
+ }
+
 ]
 
+
 ARMAS = [
-("pé de cabra","Contato",15,0),
-("Plasma", "Raio", 30,0),
-("HellFire","Fogo", 25,0),
-("Tsunami", "Agua", 40,0),  
-("TerraForm","Pedra", 35,0)
+{"nome":"pé de cabra",
+ "tipo": "contato",
+"efeito": 20,
+"qtde": 0
+ }, 
+
+{"nome":"Plasma",
+"tipo": "Raio",
+"efeito": 30,
+"qtde": 0
+ },
+
+{"nome":"HellFire",
+ "tipo": "Fire",
+  "efeito": 40,
+  "qtde": 0
+ }
+
 ]
 
 ITENS = [ 
-("CriptoMoedas", "Item", 0,10)
+
+{"nome":"CriptoMoedas",
+ "tipo": "item",
+  "efeito": 0,
+  "qtde": 10
+ }
+
 ]

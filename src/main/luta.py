@@ -12,8 +12,9 @@ from inventario import inventario,exibiritemns
 fuga = (1, 2, 3, 4, 5, 6)
 chance = (1, 2, 3, 4)
 moedas = random.randint(0,10)
-matou = 0
+matou = 99
 morreu = 0
+drop = [1,2,3,4]
 COR_PLAYER = "\033[1;32m"
 COR_INIMIGO = "\033[1;31m"
 COR_SISTEMA = "\033[1;33m"
@@ -128,7 +129,7 @@ def turno_inimigo(inimigo, jogador):
 
 
 def combate(robo="comum",qtd=0):
-    global jogador, inimigo, chance, fuga, moedas,matou,morreu
+    global jogador, inimigo, chance, fuga, moedas,matou,morreu,drop
     jogador = get_personagem().copy()
     vida_maxima_jogador = jogador.get("vida", 100)
     nome = get_ps()
@@ -198,7 +199,9 @@ def combate(robo="comum",qtd=0):
                 elif opcao == 3:  # Inventário
                     inv = inventario()
                     if inv:
-                        nomes = [t[0] for t in items.SERINGAS]
+                        nomes = [item['nome'] for item in items.SERINGAS]
+
+
                         if inv.get("nome") in nomes:
                             if inv["tipo"] == "dano":
                                 jogador["ataque"] += inv["efeito"]
@@ -217,9 +220,11 @@ def combate(robo="comum",qtd=0):
                             elif inv["tipo"] == "sorte":
                                 metade_chance = len(chance) // 2
                                 metade_fuga = len(fuga) // 2
+                                metade_drop = len(drop) // 2
                                 chance = chance[:metade_chance]
                                 fuga = fuga[:metade_fuga]
                                 moedas = moedas * 2
+                                drop = drop[:metade_drop]
                                 print(f"\n{COR_PLAYER}╔══════════════════════════════════════╗{RESET}")
                                 print(f"{COR_PLAYER}║     SERINGA DA SORTE APLICADA!       ║{RESET}")
                                 print(f"  Sua sorte aumentou significativamente!")
@@ -239,8 +244,22 @@ def combate(robo="comum",qtd=0):
                     print(f"{COR_PLAYER}║VITÓRIA! {inimigo["nome"]} DERROTADO!║{RESET}")
                     print(f"{COR_PLAYER}╚══════════════════════════════════════╝{RESET}")
                     
+                    
+                    esc = random.choice(drop)
+                    if esc == 1:
+                        seringa  = items.SERINGAS
+                        aleatorio = random.choice(seringa)
+                        print(f"{COR_SISTEMA}O droide deixou cair{RESET}:  \033[31m{aleatorio["nome"]}\033[0m")
+                        aleatorio["qtde"] += 1
+                        print(f"{COR_SISTEMA}Agora você possui {aleatorio["qtde"]} seringas de {aleatorio["nome"]}{RESET}")
+
+
+
+
+
+
                     print(f"\n{COR_SISTEMA}O inimigo te transferiu {moedas} CriptoMoedas{RESET}")
-                    sleep(2)
+                    sleep(5)
                     
                     for fileira, item  in enumerate(items.ITENS):
                         nome,tipo,efeito,qtde = item
@@ -252,14 +271,17 @@ def combate(robo="comum",qtd=0):
                     matou += 1
                     horda = str(qtd)
                     
-                    if horda[-1] == "0" or horda[-1] == "5" or horda == "16":
+                    if horda[-1] == "0" or horda[-1] == "5":
                         op = input(f"{COR_SISTEMA}Você quer enfrentar a horda de droides?[s/n]{RESET} ").strip()[0]
                         
                         while True:
                             if op == "s":
                                 return "continue"
                             elif op == "n":
+                               
                                 exibiritemns("EM BREVE")
+                                sleep(2)
+                                estatistica(kills=matou,deaths=morreu)
                                 sleep(3)
                                 exit()
                             else:
