@@ -8,7 +8,7 @@ from ilustração import limpartela, linha
 from cenario import mudarcenario, escolhe
 from ilustração import estatistica
 from inventario import inventario,exibiritemns
-
+from prelore import dialogo_pre_horda
 fuga = (1, 2, 3, 4, 5, 6)
 chance = (1, 2, 3, 4)
 moedas = random.randint(0,10)
@@ -25,7 +25,7 @@ BOLD = "\033[1m"
 
 
 def calcular_ataque(atacante=None, defensor=None, is_player=True, nome_atacante=""):
-    global jogador, inimigo
+    global jogador, inimigo,desvios
     if atacante is None:
         atacante = jogador if is_player else inimigo
     if defensor is None:
@@ -134,6 +134,12 @@ def combate(robo="comum",qtd=0):
     vida_maxima_jogador = jogador.get("vida", 100)
     nome = get_ps()
     inimigo = criarinimigo(robo)
+    if qtd == 16:
+        qtd = 0
+
+
+
+
 
     limpartela()
     print(f"{COR_SISTEMA}╔══════════════════════════════════════════════════════════════╗{RESET}")
@@ -173,18 +179,23 @@ def combate(robo="comum",qtd=0):
                     calcular_ataque(jogador, inimigo, is_player=True, nome_atacante=nome)
 
                 elif opcao == 1:  # Fugir
-                    print(f"\n{COR_SISTEMA}Você procura uma brecha para escapar...{RESET}")
-                    sleep(1.5)
-                    tentativa = random.choice(fuga)
-                    if tentativa == 1:
-                        print(f"\n{COR_PLAYER}╔══════════════════════════════════════╗{RESET}")
-                        print(f"{COR_PLAYER}║     FUGA BEM SUCEDIDA!               ║{RESET}")
-                        print(f"{COR_PLAYER}╚══════════════════════════════════════╝{RESET}")
+                    if qtd != 16:
+                        print(f"\n{COR_SISTEMA}Você procura uma brecha para escapar...{RESET}")
                         sleep(1.5)
-                        exit()
+                        tentativa = random.choice(fuga)
+                        if tentativa == 1:
+                            print(f"\n{COR_PLAYER}╔══════════════════════════════════════╗{RESET}")
+                            print(f"{COR_PLAYER}║     FUGA BEM SUCEDIDA!               ║{RESET}")
+                            print(f"{COR_PLAYER}╚══════════════════════════════════════╝{RESET}")
+                            sleep(1.5)
+                            return 0
+
+                        else:
+                            print(f"\n{COR_INIMIGO}O inimigo bloqueia sua fuga!{RESET}")
+                            sleep(2)
                     else:
-                        print(f"\n{COR_INIMIGO}O inimigo bloqueia sua fuga!{RESET}")
-                    sleep(2)
+                        print(f"\n{COR_SISTEMA}Você esta encurralado e não pode fugir...{RESET}")
+                        sleep(2)
 
                 elif opcao == 2:  # Curar
                     curachance = random.choice(chance)
@@ -259,39 +270,31 @@ def combate(robo="comum",qtd=0):
 
 
                     print(f"\n{COR_SISTEMA}O inimigo te transferiu {moedas} CriptoMoedas{RESET}")
-                    sleep(5)
+                    sleep(3)
                     
-                    for fileira, item  in enumerate(items.ITENS):
-                        nome,tipo,efeito,qtde = item
-                        if nome == "CriptoMoedas":
-                            novaqtde = moedas + qtde
-                            print(f"{COR_SISTEMA}Agora Você possui {novaqtde} de CriptoMoedas{RESET}")
-                            sleep(4)
-                            items.ITENS[fileira] = (nome,tipo,efeito,novaqtde)
+                    cripto = items.ITENS
+                    nova = cripto[0]["qtde"] + moedas
+                    add = cripto[0]["qtde"] = nova
+                    if moedas != 0:
+                        print(f"\n{COR_SISTEMA}Nova quatidade de CriptoMoedas: {add}$ {RESET}")
+                        sleep(2)
+                    else:
+                        print(f"\n{COR_SISTEMA}O inimigo não te deu CriptoMoedas{RESET}")
+                        sleep(2)
+
+
                     matou += 1
-                    horda = str(qtd)
                     
-                    if horda[-1] == "0" or horda[-1] == "5":
-                        op = input(f"{COR_SISTEMA}Você quer enfrentar a horda de droides?[s/n]{RESET} ").strip()[0]
-                        
-                        while True:
-                            if op == "s":
-                                return "continue"
-                            elif op == "n":
-                               
-                                exibiritemns("EM BREVE")
-                                sleep(2)
-                                estatistica(kills=matou,deaths=morreu)
-                                sleep(3)
-                                exit()
-                            else:
-                                print("Digite s ou n corretamente")
-                                sleep(2)
-
-
-
-
-
+                    
+                    if qtd == 5:
+                        op  = input(f"{COR_SISTEMA}VOCÊ QUER CONTINUAR?[S/N]{RESET}")[0].upper()
+                        if op in "SN":
+                            if op == "S":
+                                return "continuou"
+                            elif op == "N":
+                                return "fugiu"
+                        else:
+                            print(f"{COR_INIMIGO}DIGITE S OU N CORRETAMENTE!!!!{RESET}")
 
             else:
                 turno_inimigo(inimigo, jogador)

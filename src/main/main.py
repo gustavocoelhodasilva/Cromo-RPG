@@ -1,5 +1,5 @@
 from jogador import iniciar_jogador
-from prelore import inicial,revelacao
+from prelore import inicial,revelacao,dialogo_pre_horda,dialogo_encontro_ravi,tubulacao
 from ilustração import limpartela
 from luta import combate
 import random
@@ -9,24 +9,30 @@ def main():
     limpartela()
     inicial()
 
-    comb = combate()
 
-    revelacao()
-
-    print("\033[33m[ ALERTA DE SISTEMA: As hordas de robôs estão se aproximando... ]\033[0m\n")
-    c = 0
-    aleatorios = ["comum","medico","raivoso"]
-    c += 1
-    while c < 6:
-        if c == 5:
-            c = 0
-        else:
-            esc = random.choice(aleatorios)
-            if comb == "continue":
-                combate(esc,c)
-                c += 1
-        
+    
+    
 
 
+
+    
+    aleatorios = ["comum","medico","raivoso"] # primeira batalha/tutorial
+    combate(qtd=16)
+    dialogo_pre_horda()
+    
+
+
+    while True:
+         escolha = random.choice(aleatorios)
+         for numero, inimigo in  enumerate(range(1,6)):
+             inimigo = escolha
+             horda = combate(inimigo,numero + 1)
+         if horda == "continuou":
+             pass
+         elif horda == "fugiu":
+             revelacao()
+             dialogo_encontro_ravi()
+             tubulacao()
+             break
 if __name__ == "__main__":
     main()

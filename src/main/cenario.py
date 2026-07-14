@@ -15,7 +15,6 @@ def arrumarlista():
 def mostraropcoes():
      for lista in cenarios: 
         for c, op in enumerate(lista): 
-            sleep(0.5)
             print(f"\033[34m{c:.<10} {op}\033[0m")
 
 
