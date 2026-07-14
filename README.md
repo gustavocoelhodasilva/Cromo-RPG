@@ -14,7 +14,7 @@
 </div>
 
 ### 📝 Descrição
-O **Cromo-RPG** é um jogo de interpretação de papéis (RPG) baseado em texto desenvolvido em Python. Ambientado em um futuro distópico e tecnológico dominado por inteligências artificiais e hordas de robôs, o jogador assume o papel de um sobrevivente cujo DNA é a única chave para libertar a humanidade de colmeias digitais. O sistema conta com mecânicas de combate por turnos, gerenciamento de inventário, uso de itens (seringas e armas), progressão de nível e estatísticas dinâmicas de fim de jogo.
+O **Cromo-RPG** é um jogo de interpretação de papéis (RPG) baseado em texto desenvolvido em Python. Ambientado em um futuro distópico e tecnológico dominado por inteligências artificiais e hordas de robôs, o jogador assume o papel de um sobrevivente cujo DNA é a única chave para libertar a humanidade de colmeias digitais. O sistema conta com mecânicas de combate por turnos, gerenciamento de inventário, uso de itens (seringas e armas),  e estatísticas dinâmicas de fim de jogo.
 
 ### 🚀 Funcionalidades Principais (Blocos de Código)
 
@@ -173,7 +173,7 @@ def verificarnumero(prompt=">>>>"):
 ## English Version
 📸 Demonstration
 📝 Description
-Cromo-RPG is a text-based role-playing game developed in Python. Set in a dystopian, technological future dominated by artificial intelligence and cybernetic rogue waves, the player steps into the shoes of a survivor whose DNA holds the master key to saving humanity from digital hives. The project implements procedural turn-based combat, robust inventory management, utility item consumption (syringas and weapons), level progression, and post-game dynamic statistics.
+Cromo-RPG is a text-based role-playing game developed in Python. Set in a dystopian, technological future dominated by artificial intelligence and cybernetic rogue waves, the player steps into the shoes of a survivor whose DNA holds the master key to saving humanity from digital hives. The project implements procedural turn-based combat, robust inventory management, utility item consumption (syringas and weapons),  and post-game dynamic statistics.
 
 🚀 Main Features (Code Blocks)
 The engine coordinates the whole execution using native Python structures and loops. Below are the key functions powering the project:
