@@ -21,7 +21,7 @@ def criar_personagem():
     limpartela()
 
 
-def atributos(vida=100, defesa=4, ataque=1000, cura=10):
+def atributos(vida=100, defesa=4, ataque=10000000, cura=10):
     global personagem, ps
 
     personagem["nome"] = ps

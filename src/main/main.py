@@ -16,7 +16,7 @@ def main():
 
 
     
-    aleatorios = ["comum","medico","raivoso"] # primeira batalha/tutorial
+    aleatorios = ["boss"] # primeira batalha/tutorial
     combate(qtd=16)
     dialogo_pre_horda()
     

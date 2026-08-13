@@ -1,5 +1,4 @@
 from verificadores import verificarnumero
-from time import sleep
 cenarios = [
     ["Sair da capsula", "Caminhar até a cidade"]  # inicial
     

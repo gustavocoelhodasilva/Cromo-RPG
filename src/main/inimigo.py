@@ -1,180 +1,151 @@
-def dicstatus(
-    nome="Droide Comum",  # Adicionado o parâmetro nome com um padrão
-    ataque=25,
-    vida=75,
-    defesa=5,
-    cura=8,
-    segundaforma=False,
-    furia=False,
-    fatordecura=False,
-    terceiraforma = False,
-    finalboss = False
-):
-    # Se for Boss (Segunda forma + Fúria)
-    if segundaforma == True:
-        walkerboss = dict()
-        walkerboss["nome"] = nome  # Adicionado
-        walkerboss["ataque"] = ataque * 4
-        walkerboss["defesa"] = defesa * 4
-        walkerboss["cura"] = cura * 5
-        walkerboss["vida"] = vida * 5
-        walkerboss["furia"] = ataque * 5
-        return walkerboss
 
-    elif furia == True:
-        walkerraivoso = dict()
-        walkerraivoso["nome"] = nome  # Adicionado
-        walkerraivoso["ataque"] = ataque
-        walkerraivoso["defesa"] = defesa
-        walkerraivoso["cura"] = cura
-        walkerraivoso["vida"] = vida
-        walkerraivoso["furia"] = ataque * 2
-        return walkerraivoso
 
-    elif fatordecura == True:
-        walkermedico = dict()
-        walkermedico["nome"] = nome  # Adicionado
-        walkermedico["ataque"] = ataque
-        walkermedico["defesa"] = defesa + 4
-        walkermedico["cura"] = cura * 4
-        walkermedico["vida"] = vida + 5
-        return walkermedico
 
-    elif terceiraforma == True:
-        walkerguardiao = dict()
-        walkerguardiao["nome"] = nome  # Adicionado
-        walkerguardiao["ataque"] = ataque * 4
-        walkerguardiao["defesa"] = defesa * 4
-        walkerguardiao["cura"] = cura * 4
-        walkerguardiao["vida"] = vida * 3
-        return walkerguardiao
-    elif finalboss == True:
-        walkerabbadon = dict()
-        walkerabbadon["nome"] = nome  # Adicionado
-        walkerabbadon["ataque"] = ataque * 6
-        walkerabbadon["defesa"] = defesa * 6
-        walkerabbadon["cura"] = cura * 6
-        walkerabbadon["vida"] = vida * 10
-        return walkerabbadon
-    
-    else:
-        # Walker Comum normal
-        walker = dict()
-        walker["nome"] = nome  # Adicionado
-        walker["ataque"] = ataque
-        walker["defesa"] = defesa
-        walker["cura"] = cura
-        walker["vida"] = vida
-        return walker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HABILIDADES = {
+    "ganancia": {
+        "nome": "Ganância Absoluta",
+        "efeito": "Bloqueia o uso do inventário"
+    },
+    "esmagamento": {
+        "nome": "Esmagamento Hidráulico",
+        "efeito": "Rompe escudos e ignora defesa"
+    },
+    "abaddon_ult": {
+        "nome": "0RGULH0 M4LD1T0",
+        "efeito": "Reduz status do jogador, e impede fuga"
+    },
+    "contrato": {
+        "nome": "Contrato de Sangue",
+        "efeito": "Causa dano direto ignorando defesas"
+    },
+    "enxerto": {
+        "nome": "Enxerto de Metal",
+        "efeito": "Ganha um escudo indestrutível por 2 turnos" #loja
+    },
+    "sinal_besta": {
+        "nome": "Sinal da Besta",
+        "efeito": "Superaquece o chip neural, causando dano de fogo por turno"
+    },
+    "suborno": {
+        "nome": "Suborno",
+        "efeito": "Chance de roubar créditos do jogador a cada ataque"
+    },
+    "emp": {
+        "nome": "Pulso EMP",
+        "efeito": "Desativa as habilidades ativas do jogador por 2 turnos" #loja
+    }
+}
+
+
+def dicstatus(nome="Droide Comum", ataque=25, vida=75, defesa=5, cura=8, mult_atk=1, mult_def=1, mult_vida=1, mult_cura=1, furia_val=0):
+    """
+    Função genérica para calcular os status com base em multiplicadores.
+    Evita a necessidade de dezenas de 'if/elif' booleanos.
+    """
+    return {
+        "nome": nome,
+        "ataque": ataque * mult_atk,
+        "defesa": defesa * mult_def,
+        "cura": cura * mult_cura,
+        "vida": vida * mult_vida,
+        "furia": furia_val,
+        "habilidade": None
+    }
 
 
 def criarinimigo(tipo="comum"):
-    # Garante compatibilidade caso digite em maiúsculas
     tipo = tipo.lower()
-
-    # --- INIMIGOS ANTIGOS / ORIGINAIS ---
+    # --- INIMIGOS ESPECIAIS / BOSSES ---
     if tipo == "boss":
-      
-        inimigo = dicstatus(nome="EG01SM0 (BOSS)", segundaforma=True)
-        inimigo["habilidade"] = "Ganancia Absoluta (Bloqueia o inventario)"
+        inimigo = dicstatus(nome="EG01SM0 (BOSS)", mult_atk=4, mult_def=4, mult_cura=5, mult_vida=5)
+        inimigo["furia"] = 125
+        inimigo["habilidade"] = HABILIDADES["ganancia"]
         return inimigo
+
     elif tipo == "medico":
-  
-        inimigo = dicstatus(nome="larva parasitaria", fatordecura=True)
-        inimigo["habilidade"] = "Choro Ilusorio (Drena vida do alvo)"
+        inimigo = dicstatus(nome="Larva Parasitária", defesa=9, mult_cura=4, vida=80)
         return inimigo
+
     elif tipo == "raivoso":
-       
-        inimigo = dicstatus(nome="Flagelo de gomorra ", furia=True)
-        inimigo["habilidade"] = "Frenesi Quimico (Ataques rapidos e descontrolados)"
+        inimigo = dicstatus(nome="Flagelo de Gomorra", furia_val=50)
         return inimigo
+
     elif tipo == "guardiao":
-       
-        inimigo = dicstatus(nome="Guardiao de G0MORR4 (GUARDIÃO) ", terceiraforma=True)
-        inimigo["habilidade"] = "Esmagamento Hidraulico (Rompe escudos)"
+        inimigo = dicstatus(nome="Guardião de G0MORR4 (GUARDIÃO)", mult_atk=4, mult_def=4, mult_cura=4, mult_vida=3)
+        inimigo["habilidade"] = HABILIDADES["esmagamento"]
         return inimigo
-    
-     # =========================================================================
-    # --- ABBADON FINAL BOSS ---
-    # =========================================================================
-    
+
     elif tipo == "abaddon":
-        # Chefe final do lore
-        inimigo = dicstatus(nome = "666.sys [4B4DD0N] 666.sys (F1N4L B0S5)", finalboss=True)
-        inimigo["habilidade"] = "0GURLH0 M4LD1T0 (Reduz todos os seus status, não deixa usar o inventario, impossivel fugir)"
+        inimigo = dicstatus(nome="666.sys [4B4DD0N] 666.sys (FINAL BOSS)", mult_atk=6, mult_def=6, mult_cura=6, mult_vida=10)
+        inimigo["habilidade"] = HABILIDADES["abaddon_ult"]
         return inimigo
 
-    # =========================================================================
-    # --- NOVO SETOR: BABILÔNIA (O MERCADO DE ALMAS) ---
-    # =========================================================================
-    elif tipo == "babilônia_comum1" or tipo == "mercador":
+    # --- SETOR: BABILÔNIA ---
+    elif tipo in ["babilônia_comum1", "mercador"]:
         inimigo = dicstatus(nome="Mercador", ataque=18, vida=70)
-        inimigo["habilidade"] = "Dreno de Moedas (Rouba recursos digitais do jogador)"
-        return inimigo
-        
-    elif tipo == "babilônia_comum2" or tipo == "corretor":
-        inimigo = dicstatus(nome="Corretor", ataque=22, vida=65, defesa=8)
-        inimigo["habilidade"] = "Sobrecarga de Display (Cega o jogador por 1 turno)"
-        return inimigo
-        
-    elif tipo == "babilônia_comum3" or tipo == "bancario":
-        inimigo = dicstatus(nome="Agenciador", fatordecura=True) # Usa estrutura medica
-        inimigo["habilidade"] = "Cobranca Compulsoria (Cura aliados confiscando vida)"
-        return inimigo
-        
-    elif tipo == "babilônia_guardiao" or tipo == "guardiao_babilônia":
-        inimigo = dicstatus(nome="O C0br4d0r de 4lm45 (GUARDIÃO)", terceiraforma=True)
-        inimigo["habilidade"] = "Contrato de Sangue (Causa dano direto ignorando defesas)"
+        inimigo["habilidade"] = HABILIDADES["suborno"]
         return inimigo
 
-    # =========================================================================
-    # --- NOVO SETOR: SODOMA (A CARNE SINTÉTICA) ---
-    # =========================================================================
-    elif tipo == "sodoma_comum1" or tipo == "retalhador":
-        inimigo = dicstatus(nome="Flagelo de Sodoma (Ajustado)", furia=True) # Usa estrutura de furia do lore
-        inimigo["habilidade"] = "Amputacao Voluntaria (Aumenta o proprio ataque e perde defesa)"
-        return inimigo
-        
-    elif tipo == "sodoma_comum2" or tipo == "cirurgiao":
-        inimigo = dicstatus(nome="Robo Cirurgico Desertor", ataque=15, vida=85, defesa=12)
-        inimigo["habilidade"] = "Mutilacao Biomecanica (Aplica sangramento continuo)"
-        return inimigo
-        
-    elif tipo == "sodoma_comum3" or tipo == "sucateiro":
-        inimigo = dicstatus(nome="Colhedor de Bio-materia", ataque=20, vida=80)
-        inimigo["habilidade"] = "Injecao de Oleo Poluido (Reduz a velocidade do jogador)"
-        return inimigo
-        
-    elif tipo == "sodoma_guardiao" or tipo == "guardiao_sodoma":
-        inimigo = dicstatus(nome="O Qu1m3r4 de C4rn3 (GUARDIÃO)", terceiraforma=True)
-        inimigo["habilidade"] = "Enxerto de Metal (Ganha um escudo indestrutivel por 2 turnos)"
+    elif tipo in ["babilônia_comum2", "corretor"]:
+        return dicstatus(nome="Corretor", ataque=22, vida=65, defesa=8)
+
+    elif tipo in ["babilônia_comum3", "bancario"]:
+        return dicstatus(nome="Agenciador", defesa=9, mult_cura=4, vida=80)
+
+    elif tipo in ["babilônia_guardiao", "guardiao_babilônia"]:
+        inimigo = dicstatus(nome="O C0br4d0r de 4lm45 (GUARDIÃO)", mult_atk=4, mult_def=4, mult_cura=4, mult_vida=3)
+        inimigo["habilidade"] = HABILIDADES["contrato"]
         return inimigo
 
-    # =========================================================================
-    # --- NOVO SETOR: GOMORRA (A LINHA DE MONTAGEM) ---
-    # =========================================================================
-    elif tipo == "gomorra_comum1" or tipo == "serafim_ferro":
-        inimigo = dicstatus(nome="Serafim de Ferro", ataque=25, vida=75) # Inimigo padrao do lore
-        inimigo["habilidade"] = "Varredura Piramidal (Cancela esquivas do jogador)"
-        return inimigo
-        
-    elif tipo == "gomorra_comum2" or tipo == "verme":
-        inimigo = dicstatus(nome="Verme da Lixeira de Silicio", ataque=15, vida=90)
-        inimigo["habilidade"] = "Ejecao Toxica (Envenena o alvo com fluidos industriais)"
-        return inimigo
-        
-    elif tipo == "gomorra_comum3" or tipo == "fundidor":
-        inimigo = dicstatus(nome="Operario Autômato", furia=True)
-        inimigo["habilidade"] = "Golpe de Fundicao (Causa dano de fogo acumulativo)"
-        return inimigo
-        
-    elif tipo == "gomorra_guardiao" or tipo == "guardiao_gomorra_novo":
-        inimigo = dicstatus(nome="$0b3r4n0 da Fundicao (GUARDIÃO)", terceiraforma=True)
-        inimigo["habilidade"] = "Sinal da Besta (Força o chip neural a superaquecer)"
+    # --- SETOR: SODOMA ---
+    elif tipo in ["sodoma_comum1", "retalhador"]:
+        return dicstatus(nome="Flagelo de Sodoma (Ajustado)", furia_val=50)
+
+    elif tipo in ["sodoma_comum2", "cirurgiao"]:
+        return dicstatus(nome="Robô Cirúrgico Desertor", ataque=15, vida=85, defesa=12)
+
+    elif tipo in ["sodoma_comum3", "sucateiro"]:
+        return dicstatus(nome="Colhedor de Bio-matéria", ataque=20, vida=80)
+
+    elif tipo in ["sodoma_guardiao", "guardiao_sodoma"]:
+        inimigo = dicstatus(nome="O Qu1m3r4 de C4rn3 (GUARDIÃO)", mult_atk=4, mult_def=4, mult_cura=4, mult_vida=3)
+        inimigo["habilidade"] = HABILIDADES["enxerto"]
         return inimigo
 
+    # --- SETOR: GOMORRA ---
+    elif tipo in ["gomorra_comum1", "serafim_ferro"]:
+        return dicstatus(nome="Serafim de Ferro", ataque=25, vida=75)
+
+    elif tipo in ["gomorra_comum2", "verme"]:
+        inimigo = dicstatus(nome="Verme da Lixeira de Silício", ataque=15, vida=90)
+        inimigo["habilidade"] = HABILIDADES["emp"]
+        return inimigo
+
+    elif tipo in ["gomorra_comum3", "fundidor"]:
+        return dicstatus(nome="Operário Autômato", furia_val=50)
+
+    elif tipo in ["gomorra_guardiao", "guardiao_gomorra_novo"]:
+        inimigo = dicstatus(nome="$0b3r4n0 da Fundição (GUARDIÃO)", mult_atk=4, mult_def=4, mult_cura=4, mult_vida=3)
+        inimigo["habilidade"] = HABILIDADES["sinal_besta"]
+        return inimigo
+
+    # Default
     else:
-        # Passa o nome para o inimigo padrão original
-        inimigo = dicstatus(nome="Serafim de Ferro")
-        inimigo["habilidade"] = "Varredura Piramidal"
-        return inimigo
+        return dicstatus(nome="Droide Comum")

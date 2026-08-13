@@ -2,9 +2,8 @@ from time import sleep
 from ilustração import limpartela
 from cenario import arrumarlista, escolhe
 
-# --- CONFIGURAÇÃO DE TESTE ---
-# Mude para 1 quando for lançar o jogo. Em 0.1, os textos passam voando para testar rápido!
-TEMPO_TESTE = 0
+
+TEMPO_TESTE = 1
 
 COR_LORE = "\033[32m"
 COR_ALERTA = "\033[31m"

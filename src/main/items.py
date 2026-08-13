@@ -1,3 +1,13 @@
+def info(*iinfo):
+    armazen = list(iinfo)
+    pacote = {}
+    pacote["nome"] = armazen[0]
+    pacote["tipo"] = armazen[1]
+    pacote["efeito"] = armazen[2]
+    pacote["qtde"] = armazen[3]
+    return pacote
+
+
 SERINGAS = [ 
 {"nome":"Adrenalina",
 "tipo": "dano",

@@ -3,12 +3,11 @@ import items
 from time import sleep
 from sys import exit
 from jogador import get_ps, get_personagem
-from inimigo import criarinimigo
-from ilustração import limpartela, linha
+from inimigo import criarinimigo,HABILIDADES
+from ilustração import limpartela
 from cenario import mudarcenario, escolhe
-from ilustração import estatistica
-from inventario import inventario,exibiritemns
-from prelore import dialogo_pre_horda
+from inventario import inventario
+
 fuga = (1, 2, 3, 4, 5, 6)
 chance = (1, 2, 3, 4)
 moedas = random.randint(0,10)
@@ -116,22 +115,66 @@ def turno(nome_jogador, nome_inimigo="walker"):
 def turno_inimigo(inimigo, jogador):
     nome_inimigo = inimigo.get("nome").upper()
     print(f"\n{COR_INIMIGO}╔══════════════════════════════════════╗{RESET}")
-    print(f"{COR_INIMIGO}║      VEZ DE {nome_inimigo:<18}       ║{RESET}")
+    print(f"{COR_INIMIGO}║VEZ DE {nome_inimigo:<18}       ║{RESET}")
     print(f"{COR_INIMIGO}╚══════════════════════════════════════╝{RESET}")
-    sleep(1.3)
-
-    escolha = random.choice(["atacar", "curar"])
+    sleep(1.2)
+    escolha = random.choice(["atacar","curar"])
     if escolha == "atacar":
         calcular_ataque(inimigo, jogador, is_player=False)
+        if nome_inimigo == "MERCADOR":
+            esc = random.randint(0,1)
+            if esc == 1:
+                roubo = random.randint(10,20)
+                items.ITENS[0]["qtde"] -= roubo
+                limpartela()
+                print(f"{COR_SISTEMA}╔══════════════════════════════════════════════════════════════╗{RESET}")
+                print(f"{COR_SISTEMA}║      O MERCADOR TE ROUBOU  {roubo}$ CRIPTOMOEDAS             ║{RESET}")
+                print(f"{COR_SISTEMA}╚══════════════════════════════════════════════════════════════╝{RESET}")
+                sleep(2)
+
+
     elif escolha == "curar":
         status = "sucesso" if inimigo["vida"] < 75 else "cheio"
         executar_cura(inimigo, status, is_player=False)
 
 
 def combate(robo="comum",qtd=0):
-    global jogador, inimigo, chance, fuga, moedas,matou,morreu,drop
+    global jogador, inimigo, chance, fuga, moedas,matou,morreu,drop,resposta,cenario
+   
     jogador = get_personagem().copy()
     vida_maxima_jogador = jogador.get("vida", 100)
+    if robo == "guardiao":
+        jogador["defesa"] = 0
+        limpartela()
+        print(f"{COR_SISTEMA}╔══════════════════════════════════════════════════════════════╗{RESET}")
+        print(f"{COR_SISTEMA}║       O INIMIGO ESMAGOU SUAS DEFESAS                         ║{RESET}")
+        print(f"{COR_SISTEMA}╚══════════════════════════════════════════════════════════════╝{RESET}")
+        sleep(2)
+    elif robo == "babilônia_guardiao":
+            jogador["defesa"] = 0
+            limpartela()
+            print(f"{COR_SISTEMA}╔════════════════════════════════════════════════════════════════════╗{RESET}")
+            print(f"{COR_SISTEMA}║ O INIMIGO E FORÇOU A FAZER UM CONTRATO E AGORA VOCE NAO TEM DEFESAS║{RESET}")
+            print(f"{COR_SISTEMA}╚════════════════════════════════════════════════════════════════════╝{RESET}")
+            sleep(2)
+
+    elif robo == "abaddon":
+            jogador["defesa"] = 0
+            jogador["vida"] -= 10
+            jogador["ataque"] -= 10
+            jogador["cura"] -= 10
+            sleep(1)
+            limpartela()
+            print(f"{COR_SISTEMA}╔══════════════════════════════════════════════════════════════╗{RESET}")
+            print(f"{COR_SISTEMA}║         O INIMIGO TE AMALDIÇOU E ROUBOU SEUS STATUS          ║{RESET}")
+            print(f"{COR_SISTEMA}╚══════════════════════════════════════════════════════════════╝{RESET}")
+            sleep(2)
+    elif robo == "gomorra_guardiao":
+        limpartela()
+        print(f"{COR_SISTEMA}╔══════════════════════════════════════════════════════════════╗{RESET}")
+        print(f"{COR_SISTEMA}║           O SEU CHIP CEREBRAL AQUECE TE QUEIMANDO            ║{RESET}")
+        print(f"{COR_SISTEMA}╚══════════════════════════════════════════════════════════════╝{RESET}")
+        sleep(2)
     nome = get_ps()
     inimigo = criarinimigo(robo)
     if qtd == 16:
@@ -149,7 +192,8 @@ def combate(robo="comum",qtd=0):
 
     while jogador.get("vida", 0) > 0 and inimigo.get("vida", 0) > 0:
         ordem = turno(nome, "walker")
-        
+        if robo == "gomorra_guardiao":
+            jogador["vida"] -= 10 
         for atacante in ordem:
             if verifica_morte(jogador) or verifica_morte(inimigo):
                 break
@@ -171,14 +215,29 @@ def combate(robo="comum",qtd=0):
                 print(f"   [4] Sair{RESET}")
                 print(f"                                               {COR_AÇÃO}Inimigo nº {qtd} {RESET}")
                 print(f"{COR_AÇÃO}╚══════════════════════════════════════════════════════════════╝{RESET}")
+                cenario = mudarcenario("Atacar","Fugir","Curar","Inventario")
                 
-                mudarcenario("Atacar", "Fugir", "Curar", "Inventario")
+                resposta = ""
+
+
+                if inimigo["habilidade"] == HABILIDADES["ganancia"]:
+                    print("A ganancia do inimigo roubou seu inventario")
+                    cenario = mudarcenario("Atacar","Fugir","Curar")
+
+                if inimigo["habilidade"] == HABILIDADES["abaddon_ult"]:
+                    cenario = mudarcenario("Atacar","Curar","inventario")
                 opcao = escolhe()
+
+
+                
+                for ind, op in enumerate(cenario[0]):
+                    if ind == opcao:
+                        resposta = op
               
-                if opcao == 0:  # Atacar
+                if resposta == "Atacar":  # Atacar
                     calcular_ataque(jogador, inimigo, is_player=True, nome_atacante=nome)
 
-                elif opcao == 1:  # Fugir
+                elif resposta  == "Fugir":  # Fugir
                     if qtd != 16:
                         print(f"\n{COR_SISTEMA}Você procura uma brecha para escapar...{RESET}")
                         sleep(1.5)
@@ -197,7 +256,7 @@ def combate(robo="comum",qtd=0):
                         print(f"\n{COR_SISTEMA}Você esta encurralado e não pode fugir...{RESET}")
                         sleep(2)
 
-                elif opcao == 2:  # Curar
+                elif resposta == "Curar":  # Curar
                     curachance = random.choice(chance)
                     if jogador["vida"] < vida_maxima_jogador and curachance == 2:
                         status = "sucesso"
@@ -207,7 +266,7 @@ def combate(robo="comum",qtd=0):
                         status = "bloqueado"
                     executar_cura(jogador, status, is_player=True)
                 
-                elif opcao == 3:  # Inventário
+                elif resposta == "Inventario":  # Inventário
                     inv = inventario()
                     if inv:
                         nomes = [item['nome'] for item in items.SERINGAS]
@@ -240,9 +299,8 @@ def combate(robo="comum",qtd=0):
                                 print(f"{COR_PLAYER}║     SERINGA DA SORTE APLICADA!       ║{RESET}")
                                 print(f"  Sua sorte aumentou significativamente!")
                                 print(f"{COR_PLAYER}╚══════════════════════════════════════╝{RESET}")
-                            sleep(2.5)
-                            
-                elif opcao == 4:
+                            sleep(2.5)    
+                elif resposta == "Sair":
                     print(f"\n{COR_SISTEMA}Encerrando o jogo...{RESET}")
                     sleep(1)
                     exit()
@@ -254,7 +312,7 @@ def combate(robo="comum",qtd=0):
                     print(f"\n{COR_PLAYER}╔══════════════════════════════════════╗{RESET}")
                     print(f"{COR_PLAYER}║VITÓRIA! {inimigo["nome"]} DERROTADO!║{RESET}")
                     print(f"{COR_PLAYER}╚══════════════════════════════════════╝{RESET}")
-                    
+                   
                     
                     esc = random.choice(drop)
                     if esc == 1:
@@ -282,9 +340,8 @@ def combate(robo="comum",qtd=0):
                         print(f"\n{COR_SISTEMA}O inimigo não te deu CriptoMoedas{RESET}")
                         sleep(2)
 
-
                     matou += 1
-                    
+                
                     
                     if qtd == 5:
                         op  = input(f"{COR_SISTEMA}VOCÊ QUER CONTINUAR?[S/N]{RESET}")[0].upper()
@@ -295,6 +352,7 @@ def combate(robo="comum",qtd=0):
                                 return "fugiu"
                         else:
                             print(f"{COR_INIMIGO}DIGITE S OU N CORRETAMENTE!!!!{RESET}")
+                    return True
 
             else:
                 turno_inimigo(inimigo, jogador)
