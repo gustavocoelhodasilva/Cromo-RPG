@@ -10,7 +10,7 @@ from inventario import inventario
 
 fuga = (1, 2, 3, 4, 5, 6)
 chance = (1, 2, 3, 4)
-moedas = random.randint(0,10)
+moedas = random.randint(0,30)
 matou = 99
 morreu = 0
 drop = [1,2,3,4]
@@ -21,6 +21,29 @@ COR_AÇÃO = "\033[1;34m"
 COR_MENU = "\033[1;36m"
 RESET = "\033[0m"
 BOLD = "\033[1m"
+
+inimigos_chefes = [
+    "Guardião de G0MORR4 (GUARDIÃO)",
+    "O C0br4d0r de 4lm45 (GUARDIÃO)",
+    "O Qu1m3r4 de C4rn3 (GUARDIÃO)",
+    "$0b3r4n0 da Fundição (GUARDIÃO)",
+    "EG01SM0 (BOSS)",
+  
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def calcular_ataque(atacante=None, defensor=None, is_player=True, nome_atacante=""):
@@ -37,8 +60,8 @@ def calcular_ataque(atacante=None, defensor=None, is_player=True, nome_atacante=
         sleep(1.5)
 
     # Chance de esquiva
-    desvios = (1, 2, 3)
-    if random.choice(desvios) == 3:
+    desvios = (1, 2, 3,4,5,6,7)
+    if random.choice(desvios) == 4:
         if is_player:
             print(f"\n{COR_INIMIGO}╔══════════════════════════════════════╗{RESET}")
             print(f"{COR_INIMIGO}║  O inimigo SE ESQUIVOU do seu golpe! ║{RESET}")
@@ -139,8 +162,8 @@ def turno_inimigo(inimigo, jogador):
 
 
 def combate(robo="comum",qtd=0):
-    global jogador, inimigo, chance, fuga, moedas,matou,morreu,drop,resposta,cenario
-   
+    global jogador, inimigo, chance, fuga, moedas,matou,morreu,drop,resposta,cenario,mascaras
+  
     jogador = get_personagem().copy()
     vida_maxima_jogador = jogador.get("vida", 100)
     if robo == "guardiao":
@@ -323,16 +346,30 @@ def combate(robo="comum",qtd=0):
                         print(f"{COR_SISTEMA}Agora você possui {aleatorio["qtde"]} seringas de {aleatorio["nome"]}{RESET}")
 
 
-
+                    if inimigo["nome"] in inimigos_chefes:
+                        moedas = 100
+                        mascara = items.ITENS[1]["qtde"] + 1
+                        add = mascara
+                        items.ITENS[1]['qtde'] += add
+                        print("voce conseguiu um fragmento")
+                        sleep(2)
 
 
 
                     print(f"\n{COR_SISTEMA}O inimigo te transferiu {moedas} CriptoMoedas{RESET}")
                     sleep(3)
+
                     
+
+
+
+
+
                     cripto = items.ITENS
                     nova = cripto[0]["qtde"] + moedas
                     add = cripto[0]["qtde"] = nova
+
+
                     if moedas != 0:
                         print(f"\n{COR_SISTEMA}Nova quatidade de CriptoMoedas: {add}$ {RESET}")
                         sleep(2)

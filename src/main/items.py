@@ -57,6 +57,12 @@ ITENS = [
  "tipo": "item",
   "efeito": 0,
   "qtde": 10
+ },
+ {"nome":"Fragmento de mascara",
+ "tipo": "item",
+  "efeito": 0,
+  "qtde": 0
  }
+
 
 ]
