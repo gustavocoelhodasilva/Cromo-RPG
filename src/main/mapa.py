@@ -34,6 +34,7 @@ def mapa():
         "Enfrentar o Corretor",
         "Enfrentar o Agenciador",
         "DESAFIAR O GUARDIÃO: O Cobrador de Almas",
+        "Mercado abandonado",
         "Voltar para a tubulação",
     ]
 
@@ -164,6 +165,11 @@ def mapa():
                 print("\033[36m[TABLET DO RAVI]: 'O Qu1m3r4 de C4rn3 se revelou! Ele usa Enxerto de Metal para criar escudos invencíveis!'\033[0m")
                 sleep(2 * TEMPO_TESTE)
                 venceu = combate("sodoma_guardiao")
+        
+
+
+
+
 
             if venceu and sub_opcao < len(opcoes_sodoma) - 1:
                 opcoes_sodoma.pop(sub_opcao)
@@ -220,7 +226,8 @@ def mapa():
                 print("\033[36m[TABLET DO RAVI]: 'Atenção! O C0br4d0r de 4lm45 apareceu! A habilidade Contrato de Sangue dele ignora nossas defesas!'\033[0m")
                 sleep(2 * TEMPO_TESTE)
                 venceu = combate("babilônia_guardiao")
-
+            
+                
             if venceu and sub_opcao < len(opcoes_babilonia) - 1:
                 opcoes_babilonia.pop(sub_opcao)
 
